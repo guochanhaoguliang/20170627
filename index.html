@@ -1,9 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>1233333</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0" />
+	<title>减少DOM操作 用transform</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		div{
+			width: 200px;
+			height: 200px;
+			background: pink;
+			position: absolute;
+			top:0;
+			left: 0;
+		}
+	</style>
+	<script type="text/javascript">
+		function tuo(obj){
+			var l = 0;
+			var t = 0;
+			obj.addEventListener('touchstart',function(ev){
+				var disL = obj.offsetLeft;
+				var disT = obj.offsetTop;
+				var disX = ev.targetTouches[0].pageX;
+				var disY = ev.targetTouches[0].pageY;
+				function move(ev){
+					 l = ev.targetTouches[0].pageX - disX;
+					 t = ev.targetTouches[0].pageY - disY;
+					obj.style.WebkitTransform='translate('+l+'px,'+t+'px)';
+				}
+
+				function end(){
+					obj.style.left=l+disL+'px';
+					obj.style.top = t+disT+'px';
+					obj.style.WebkitTransform = '';
+					document.removeEventListener('touchmove',move,false);
+					document.removeEventListener('touchend',end,false);
+				}
+				document.addEventListener('touchmove',move,false);
+				document.addEventListener('touchend',end,false);
+				ev.preventDefault();
+			},false);
+		};
+		window.addEventListener('DOMContentLoaded',function(){
+			var  div = document.getElementById('div');
+			tuo(div);
+			
+		},false);
+	</script>
 </head>
 <body>
-		<a href="b.html">aaaaaaaaa</a>
+<div id="div"></div>
 </body>
 </html>
