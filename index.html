@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0" />
-	<title>减少DOM操作 用transform</title>
+	<title>多个元素拖拽</title>
 	<style type="text/css">
 		*{
 			margin: 0;
@@ -31,10 +31,13 @@
 				var disT = obj.offsetTop;
 				var disX = ev.targetTouches[0].pageX;
 				var disY = ev.targetTouches[0].pageY;
+				var id = ev.targetTouches[0].identifier;
 				function move(ev){
-					 l = ev.targetTouches[0].pageX - disX;
-					 t = ev.targetTouches[0].pageY - disY;
-					obj.style.WebkitTransform='translate('+l+'px,'+t+'px)';
+					if(id==ev.targetTouches[0].identifier){
+						l = ev.targetTouches[0].pageX - disX;
+						 t = ev.targetTouches[0].pageY - disY;
+						obj.style.WebkitTransform='translate('+l+'px,'+t+'px)';
+					}
 				}
 
 				function end(){
@@ -46,6 +49,7 @@
 				}
 				document.addEventListener('touchmove',move,false);
 				document.addEventListener('touchend',end,false);
+
 				ev.preventDefault();
 			},false);
 		};
